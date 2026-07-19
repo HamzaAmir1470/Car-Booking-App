@@ -1,11 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import OnBoardingScreen from '../../../screens/onboarding/onboardingScreen'
 
 export default function index() {
   return (
     <View>
-     <OnBoardingScreen />
+      <Text>index</Text>
     </View>
   )
 }
