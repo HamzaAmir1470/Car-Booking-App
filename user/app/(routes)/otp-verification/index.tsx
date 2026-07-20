@@ -1,10 +1,4 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
+import OtpVerificationScreen from "../../../screens/verification/otp-verficationScreen";
 export default function index() {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  )
+  return <OtpVerificationScreen />;
 }

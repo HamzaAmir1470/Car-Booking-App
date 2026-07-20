@@ -41,7 +41,7 @@ const AuthContainer = ({ container, topSpace, imageShow }: Props) => {
         source={Images.authBg}
       />
 
-      <View style={[styles.contentContainer, { marginTop: 550 }]}>
+      <View style={[styles.contentContainer, { marginTop: 400 }]}>
         <View style={[styles.container]}>
           <ScrollView>{container}</ScrollView>
         </View>

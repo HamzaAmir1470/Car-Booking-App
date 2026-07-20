@@ -4,8 +4,12 @@ import { windowHeight, windowWidth } from "@/themes/app.constant";
 import { external } from "@/styles/external.style";
 import styles from "../../screens/Login/styles";
 import color from "@/themes/app.colors";
+import SelectInput from "../common/select-input";
+import { useState } from "react";
+import { countryItems } from "@/configs/countryList";
 
 export default function PhoneNumberInput({ width }: any) {
+  const [countryCode, setCountryCode] = useState("+92");
   return (
     <View>
       <Text
@@ -29,11 +33,14 @@ export default function PhoneNumberInput({ width }: any) {
             },
           ]}
         >
-          <TextInput
-            style={[commonStyles.regularText]}
-            placeholderTextColor={color.subtitle}
+          <SelectInput
+            title="+92"
             placeholder="+92"
-            keyboardType="numeric"
+            value={countryCode}
+            onValueChange={(text) => setCountryCode(text)}
+            showWarning={false}
+            warning={"Please select country code"}
+            items={countryItems}
           />
         </View>
         <View
