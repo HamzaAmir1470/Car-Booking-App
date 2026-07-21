@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: "100%",
-    height: windowHeight(150),
+    height: windowHeight(200),
     position: "absolute",
   },
   contentContainer: {

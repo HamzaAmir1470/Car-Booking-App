@@ -20,41 +20,41 @@ export default function OtpVerificationScreen() {
   const toast = useToast();
   const { phoneNumber } = useLocalSearchParams();
 
-//   const handleSubmit = async () => {
-//     if (otp === "") {
-//       toast.show("Please fill the fields!", {
-//         placement: "bottom",
-//       });
-//     } else {
-//       setLoader(true);
-//       const otpNumbers = `${otp}`;
-//       await axios
-//         .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/verify-otp`, {
-//           phone_number: phoneNumber,
-//           otp: otpNumbers,
-//         })
-//         .then(async (res) => {
-//           setLoader(false);
-//           if (res.data.user.email === null) {
-//             router.push({
-//               pathname: "/(routes)/registration",
-//               params: { user: JSON.stringify(res.data.user) },
-//             });
-//             toast.show("Account verified!");
-//           } else {
-//             await AsyncStorage.setItem("accessToken", res.data.accessToken);
-//             router.push("/(tabs)/home");
-//           }
-//         })
-//         .catch((error) => {
-//           setLoader(false);
-//           toast.show("Something went wrong! please re check your otp!", {
-//             type: "danger",
-//             placement: "bottom",
-//           });
-//         });
-//     }
-//   };
+  const handleSubmit = async () => {
+    if (otp === "") {
+      toast.show("Please fill the fields!", {
+        placement: "bottom",
+      });
+    } else {
+      setLoader(true);
+      const otpNumbers = `${otp}`;
+      await axios
+        .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/verify-otp`, {
+          phone_number: phoneNumber,
+          otp: otpNumbers,
+        })
+        .then((res) => {
+          setLoader(false);
+          // if (res.data.user.email === null) {
+          router.push({
+            pathname: "/(routes)/registration",
+            params: { user: JSON.stringify(res.data.user) },
+          });
+          toast.show("Account verified!");
+          // } else {
+          //   await AsyncStorage.setItem("accessToken", res.data.accessToken);
+          //   router.push("/(tabs)/home");
+          // }
+        })
+        .catch((error) => {
+          setLoader(false);
+          toast.show("Something went wrong! please re check your otp!", {
+            type: "danger",
+            placement: "bottom",
+          });
+        });
+    }
+  };
 
   return (
     <AuthContainer
@@ -68,7 +68,7 @@ export default function OtpVerificationScreen() {
           />
           <OTPTextInput
             handleTextChange={(code) => setOtp(code)}
-            inputCount={4}
+            inputCount={6}
             textInputStyle={style.otpTextInput}
             tintColor={color.subtitle}
             autoFocus={false}
@@ -76,8 +76,8 @@ export default function OtpVerificationScreen() {
           <View style={[external.mt_30]}>
             <Button
               title="Verify"
-              onPress={() => router.push("/(tabs)/home")}
-            //   disabled={loader}
+              onPress={handleSubmit}
+              //   disabled={loader}
             />
           </View>
           <View style={[external.mb_15]}>

@@ -18,38 +18,38 @@ export default function LoginScreen() {
   const [countryCode, setCountryCode] = useState("+92");
   const toast = useToast();
 
-  // const handleSubmit = async () => {
-  //   if (phone_number === "" || countryCode === "") {
-  //     toast.show("Please fill the fields!", {
-  //       placement: "bottom",
-  //     });
-  //   } else {
-  //     setloading(true);
-  //     const phoneNumber = `${countryCode}${phone_number}`;
-  //     await axios
-  //       .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/registration`, {
-  //         phone_number: phoneNumber,
-  //       })
-  //       .then((res) => {
-  //         setloading(false);
-  //         router.push({
-  //           pathname: "/(routes)/otp-verification",
-  //           params: { phoneNumber },
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         setloading(false);
-  //         toast.show(
-  //           "Something went wrong! please re check your phone number!",
-  //           {
-  //             type: "danger",
-  //             placement: "bottom",
-  //           },
-  //         );
-  //       });
-  //   }
-  // };
+  const handleSubmit = async () => {
+    if (phone_number === "" || countryCode === "") {
+      toast.show("Please fill the fields!", {
+        placement: "bottom",
+      });
+    } else {
+      setloading(true);
+      const phoneNumber = `${countryCode}${phone_number}`;
+      await axios
+        .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/registration`, {
+          phone_number: phoneNumber,
+        })
+        .then((res) => {
+          setloading(false);
+          router.push({
+            pathname: "/(routes)/otp-verification",
+            params: { phoneNumber },
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          setloading(false);
+          toast.show(
+            "Something went wrong! please re check your phone number!",
+            {
+              type: "danger",
+              placement: "bottom",
+            },
+          );
+        });
+    }
+  };
   return (
     <AuthContainer
       topSpace={windowHeight(150)}
@@ -70,8 +70,8 @@ export default function LoginScreen() {
                 <View style={[external.mt_25, external.Pb_15]}>
                   <Button
                     title="Get Otp"
-                    // onPress={() => handleSubmit()}
-                    onPress={() => router.push("/(routes)/otp-verification")}
+                    onPress={() => handleSubmit()}
+                    // onPress={() => router.push("/(routes)/otp-verification")}
                     // disabled={loading}
                   />
                 </View>
