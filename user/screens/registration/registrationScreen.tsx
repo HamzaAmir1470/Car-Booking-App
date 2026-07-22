@@ -114,7 +114,7 @@ export default function RegistrationScreen() {
               <View style={styles.margin}>
                 <Button
                   onPress={() => handleSubmit()}
-                  title="Next"
+                  title={loading ? "Verifying..." : "Continue"}
                   disabled={loading}
                   backgroundColor={color.buttonBg}
                   textColor={color.whiteColor}

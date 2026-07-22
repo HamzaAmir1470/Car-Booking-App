@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import Twilio from "twilio";
 import prisma from "../utils/prisma";
 import jwt from "jsonwebtoken";
-import { nylas } from "../app";
+import { nylas } from "../../server/app";
+import { sendToken } from "../utils/send-token";
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 if (!accountSid || !authToken) {
@@ -121,39 +122,89 @@ export const verifyOtp = async (
   }
 };
 
-export const signupNewUser = async (
+export const verifyEmailOtp = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { userId, email, name } = req.body;
+    const { otp, token } = req.body;
+
+    if (!otp || !token) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP and token are required.",
+      });
+    }
+
+    // Verify JWT token
+    const newUser: any = jwt.verify(
+      token,
+      process.env.EMAIL_ACTIVATION_SECRET!,
+    );
+
+    // Verify OTP matching
+    if (newUser.otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP.",
+      });
+    }
+
+    const { name, email, userId } = newUser.user;
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
-    if (user?.email === null) {
-      const updatedUser = await prisma.user.update({
-        where: { id: userId },
-        data: {
-          email: email,
-          name: name,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        user: updatedUser || user,
-      });
-    } else {
-      res.status(400).json({
+
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "User already has an email associated.",
+        message: "User account not found.",
       });
     }
-  } catch (error) {
-    console.error("signupNewUser error:", error);
-    res.status(500).json({
+
+    // Case 1: User already has an email set
+    if (user.email !== null) {
+      // If it's already verified with the same email, send token and log them in
+      if (user.email === email) {
+        return await sendToken(user, res);
+      }
+
+      // If set to a different email
+      return res.status(400).json({
+        success: false,
+        message: "This account already has a verified email address.",
+      });
+    }
+
+    // Case 2: User email is null (unverified/new) -> update user
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        email: email,
+        name: name,
+      },
+    });
+
+    return await sendToken(updatedUser, res);
+  } catch (error: any) {
+    console.error("verifyEmailOtp error:", error);
+
+    // Handle invalid or expired JWT token specifically
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired token.",
+      });
+    }
+
+    return res.status(500).json({
       success: false,
-      message: "An error occurred while signing up the new user.",
+      message: "An error occurred while verifying the email OTP.",
     });
   }
 };

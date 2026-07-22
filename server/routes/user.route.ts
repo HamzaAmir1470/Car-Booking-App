@@ -1,16 +1,19 @@
 import express from "express";
 import {
   LoginUser,
-  signupNewUser,
   verifyOtp,
   sendOtpToEmail,
+  verifyEmailOtp,
 } from "../controllers/user.controller";
 
 const userRouter = express.Router();
 
 userRouter.post("/registration", LoginUser);
+
 userRouter.post("/verify-otp", verifyOtp);
-userRouter.put("/sign-up-user", signupNewUser);
-userRouter.put("/email-otp-request", sendOtpToEmail);
+
+userRouter.post("/email-otp-request", sendOtpToEmail);
+
+userRouter.put("/email-otp-verify", verifyEmailOtp);
 
 export default userRouter;
