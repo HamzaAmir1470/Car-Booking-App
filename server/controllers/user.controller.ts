@@ -52,19 +52,36 @@ export const verifyOtp = async (
   next: NextFunction,
 ) => {
   try {
-    const { phone_number, otp } = req.body;
-    const serviceSid = process.env.TWILIO_SERVICE_SID;
+    const { phone_number, otp } = req.body || {};
 
+    // 1. Basic payload validation
+    if (!phone_number || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Phone number and OTP are required.",
+      });
+    }
+
+    const serviceSid = process.env.TWILIO_SERVICE_SID;
     if (!serviceSid) {
       throw new Error("Missing TWILIO_SERVICE_SID in environment variables.");
     }
 
-    // 1. Verify OTP with Twilio first
-    const verificationCheck = await client.verify.v2
-      .services(serviceSid)
-      .verificationChecks.create({ to: phone_number, code: otp });
+    // 2. Verify OTP with Twilio
+    let verificationCheck;
+    try {
+      verificationCheck = await client.verify.v2
+        .services(serviceSid)
+        .verificationChecks.create({ to: phone_number, code: otp });
+    } catch (twilioError: any) {
+      console.error("Twilio verification error:", twilioError);
+      return res.status(400).json({
+        success: false,
+        message: twilioError.message || "Failed to verify OTP with Twilio.",
+      });
+    }
 
-    // 2. Early return if OTP is invalid
+    // 3. Early return if OTP is invalid/expired
     if (verificationCheck.status !== "approved") {
       return res.status(400).json({
         success: false,
@@ -72,9 +89,9 @@ export const verifyOtp = async (
       });
     }
 
-    // 3. Find or create user after successful verification
+    // 4. Find existing user (using Prisma schema property name: phoneNumber)
     let user = await prisma.user.findUnique({
-      where: { phone_number },
+      where: { phoneNumber: phone_number },
     });
 
     if (user) {
@@ -85,9 +102,9 @@ export const verifyOtp = async (
       });
     }
 
-    // New user registration path
+    // 5. New user registration path (using Prisma schema property name: phoneNumber)
     user = await prisma.user.create({
-      data: { phone_number },
+      data: { phoneNumber: phone_number },
     });
 
     return res.status(201).json({

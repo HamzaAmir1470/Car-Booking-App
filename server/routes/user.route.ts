@@ -11,6 +11,6 @@ const userRouter = express.Router();
 userRouter.post("/registration", LoginUser);
 userRouter.post("/verify-otp", verifyOtp);
 userRouter.put("/sign-up-user", signupNewUser);
-userRouter.post("/email-otp-request", sendOtpToEmail);
+userRouter.put("/email-otp-request", sendOtpToEmail);
 
 export default userRouter;

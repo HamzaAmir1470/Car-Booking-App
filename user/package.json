@@ -9,8 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-clipboard/clipboard": "^1.14.1",
-    "@react-native-picker/picker": "^2.11.4",
+    "@react-native-picker/picker": "2.7.5",
     "axios": "^1.7.2",
     "expo": "~51.0.39",
     "expo-constants": "~16.0.2",
@@ -28,7 +27,6 @@
     "react-native-google-places-autocomplete": "^2.5.6",
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
-    "react-native-otp-inputs": "^7.4.0",
     "react-native-otp-textinput": "^1.1.6",
     "react-native-picker-select": "^9.3.1",
     "react-native-reanimated": "~3.10.1",
@@ -43,7 +41,6 @@
     "@babel/core": "^7.20.0",
     "@types/node": "^26.1.1",
     "@types/react": "~18.2.45",
-    "@types/react-native": "^0.73.0",
     "typescript": "~5.3.3"
   },
   "private": true

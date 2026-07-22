@@ -92,7 +92,7 @@ export default function RegistrationScreen() {
                 title="Phone Number"
                 placeholder="Enter your phone number"
                 value={parsedUser?.phone_number}
-                disabled={true}
+                disabled={loading}
               />
               <Input
                 title="Email Address"
