@@ -71,8 +71,7 @@ export default function LoginScreen() {
                   <Button
                     title="Get Otp"
                     onPress={() => handleSubmit()}
-                    // onPress={() => router.push("/(routes)/otp-verification")}
-                    // disabled={loading}
+                    disabled={loading}
                   />
                 </View>
               </View>

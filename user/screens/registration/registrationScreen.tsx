@@ -1,24 +1,26 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 import { windowHeight, windowWidth } from "@/themes/app.constant";
 import TitleView from "@/components/signup/Title.view";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
 import color from "@/themes/app.colors";
+import { router, useLocalSearchParams } from "expo-router";
+import axios from "axios";
 
-export default function registrationScreen() {
+export default function RegistrationScreen() {
   const { colors } = useTheme();
-  const [loading, setLoading] = React.useState(false);
-  const [emailFormatWarning, setEmailFormatWarning] = React.useState("");
-  const [showWarning, setShowWarning] = React.useState(false);
-  const [formData, setFormData] = React.useState({
+  const { user } = useLocalSearchParams() as any;
+  const parsedUser = JSON.parse(user);
+  const [emailFormatWarning, setEmailFormatWarning] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+  const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
     email: "",
-    countryCode: "",
-    referralId: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (key: string, value: string) => {
     setFormData((prevData) => ({
@@ -27,7 +29,34 @@ export default function registrationScreen() {
     }));
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    setLoading(true);
+    await axios
+      .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/email-otp-request`, {
+        email: formData.email,
+        name: formData.name,
+        userId: parsedUser.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        const userData: any = {
+          id: parsedUser.id,
+          name: formData.name,
+          email: formData.email,
+          phone_number: parsedUser.phone_number,
+          token: res.data.token,
+        };
+        router.push({
+          pathname: "/(routes)/email-verification",
+          params: { user: JSON.stringify(userData) },
+        });
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  };
+
   return (
     <ScrollView>
       <View>
@@ -62,8 +91,7 @@ export default function registrationScreen() {
               <Input
                 title="Phone Number"
                 placeholder="Enter your phone number"
-                // value={parsedUser?.phone_number}
-                value={formData?.phoneNumber}
+                value={parsedUser?.phone_number}
                 disabled={true}
               />
               <Input

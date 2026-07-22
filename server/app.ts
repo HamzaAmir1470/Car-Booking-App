@@ -5,18 +5,24 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route";
+import Nylas from "nylas";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "*", // Allow requests from any origin
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allow specific HTTP methods
-    allowedHeaders: "Content-Type, Authorization", // Allow specific headers
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type, Authorization",
   }),
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
+
+// nylas
+export const nylas = new Nylas({
+  apiKey: process.env.NYLAS_API_KEY!,
+});
 
 // Routes
 app.use("/api/v1", userRouter);
@@ -33,3 +39,4 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 export default app;
+
