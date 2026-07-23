@@ -6,3 +6,14 @@ type ButtonProps = {
   textColor?: string;
   disabled?: boolean;
 };
+
+type UserType = {
+  id: string;
+  name: string;
+  email?: string;
+  phone_number: string;
+  ratings?: number;
+  totalRides?: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
