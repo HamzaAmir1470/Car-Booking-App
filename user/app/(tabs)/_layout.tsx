@@ -26,7 +26,7 @@ export default function _layout() {
               );
             } else if (route.name === "history/index") {
               if (focused) {
-                iconName = <CarPrimary color={color.buttonBg} />;
+                iconName = <CarPrimary />;
               } else {
                 iconName = <Car colors={"#8F8F8F"} />;
               }

@@ -21,6 +21,6 @@ userRouter.put("/email-otp-verify", verifyEmailOtp);
 
 userRouter.get("/me", isAuthenticated, getLoggedInUserData);
 
-userRouter.get("/rides", isAuthenticated, getAllRides);
+userRouter.get("/get-rides", isAuthenticated, getAllRides);
 
 export default userRouter;
