@@ -12,7 +12,7 @@ import AuthContainer from "@/utils/container/auth-container";
 import { windowHeight } from "@/themes/app.constant";
 import axios from "axios";
 import { Toast } from "react-native-toast-notifications";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PhoneNumberVerificationScreen() {
   const driver = useLocalSearchParams();
@@ -20,58 +20,58 @@ export default function PhoneNumberVerificationScreen() {
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async () => {
-    // if (otp === "") {
-    //   Toast.show("Please fill the fields!", {
-    //     placement: "bottom",
-    //   });
-    // } else {
-    //   if (driver.name) {
-    //     setLoader(true);
-    //     const otpNumbers = `${otp}`;
-    //     await axios
-    //       .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/verify-otp`, {
-    //         phone_number: driver.phone_number,
-    //         otp: otpNumbers,
-    //         ...driver,
-    //       })
-    //       .then((res) => {
-    //         const driverData = {
-    //           ...driver,
-    //           token: res.data.token,
-    //         };
-    //         setLoader(false);
-    //         router.push({
-    //           pathname: "/(routes)/email-verification",
-    //           params: driverData,
-    //         });
-    //       })
-    //       .catch((error) => {
-    //         Toast.show("Your otp is incorrect or expired!", {
-    //           placement: "bottom",
-    //           type: "danger",
-    //         });
-    //       });
-    //   } else {
-    //     setLoader(true);
-    //     const otpNumbers = `${otp}`;
-    //     await axios
-    //       .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/login`, {
-    //         phone_number: driver.phone_number,
-    //         otp: otpNumbers,
-    //       })
-    //       .then(async (res) => {
-    //         setLoader(false);
-    //         await AsyncStorage.setItem("accessToken", res.data.accessToken);
-    //         router.push("/(tabs)/home");
-    //       })
-    //       .catch((error) => {
-    //         Toast.show("Your otp is incorrect or expired!", {
-    //           placement: "bottom",
-    //           type: "danger",
-    //         });
-    //       });
-    //   }
-    // }
+    if (otp === "") {
+      Toast.show("Please fill the fields!", {
+        placement: "bottom",
+      });
+    } else {
+      if (driver.name) {
+        setLoader(true);
+        const otpNumbers = `${otp}`;
+        await axios
+          .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/verify-otp`, {
+            phone_number: driver.phone_number,
+            otp: otpNumbers,
+            ...driver,
+          })
+          .then((res) => {
+            const driverData = {
+              ...driver,
+              token: res.data.token,
+            };
+            setLoader(false);
+            router.push({
+              pathname: "/(routes)/email-verification",
+              params: driverData,
+            });
+          })
+          .catch((error) => {
+            Toast.show("Your otp is incorrect or expired!", {
+              placement: "bottom",
+              type: "danger",
+            });
+          });
+      } else {
+        setLoader(true);
+        const otpNumbers = `${otp}`;
+        await axios
+          .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/login`, {
+            phone_number: driver.phone_number,
+            otp: otpNumbers,
+          })
+          .then(async (res) => {
+            setLoader(false);
+            await AsyncStorage.setItem("accessToken", res.data.accessToken);
+            router.push("/(tabs)/home");
+          })
+          .catch((error) => {
+            Toast.show("Your otp is incorrect or expired!", {
+              placement: "bottom",
+              type: "danger",
+            });
+          });
+      }
+    }
   };
   return (
     <AuthContainer

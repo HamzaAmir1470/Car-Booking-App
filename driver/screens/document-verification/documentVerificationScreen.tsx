@@ -46,24 +46,24 @@ export default function DocumentVerificationScreen() {
       rate: formData.rate,
     };
 
-    // await axios
-    //   .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/send-otp`, {
-    //     phone_number: `+${driverData.phone_number}`,
-    //   })
-    //   .then((res) => {
-    //     router.push({
-    //       pathname: "/(routes)/verification-phone-number",
-    //       params: driver,
-    //     });
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     setLoading(false);
-    //     Toast.show(error.message, {
-    //       placement: "bottom",
-    //       type: "danger",
-    //     });
-    //   });
+    await axios
+      .post(`${process.env.EXPO_PUBLIC_SERVER_URI}/driver/send-otp`, {
+        phone_number: `+${driverData.phone_number}`,
+      })
+      .then((res) => {
+        router.push({
+          pathname: "/(routes)/verification-phone-number",
+          params: driver,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        Toast.show(error.message, {
+          placement: "bottom",
+          type: "danger",
+        });
+      });
   };
 
   return (

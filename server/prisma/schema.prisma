@@ -34,9 +34,9 @@ model driver {
   phoneNumber String @unique
   email String? @unique
   vehicle_type VehicleType?
-  registration_number Float @unique
-  registration_date DateTime
-  driving_liscense Float
+  registration_number String @unique
+  registration_date String?
+  driving_liscense String
   vehicle_color String?
   rate Float
   ratings Float @default(0)
