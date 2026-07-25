@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route";
 import Nylas from "nylas";
+import driverRouter from "./routes/driver.route";
 
 const app = express();
 
@@ -26,6 +27,7 @@ export const nylas = new Nylas({
 
 // Routes
 app.use("/api/v1", userRouter);
+app.use("/api/v1/driver", driverRouter);
 
 // Test
 app.get("/", (req: Request, res: Response) => {
