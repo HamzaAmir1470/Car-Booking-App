@@ -29,11 +29,15 @@ export type Color = {
     darkBorder: string;
   selectPrimary: string;
   secondaryFont: string;
+  primary: string;
+  subPrimary: string;
     red: string;
   };
   
   const color: Color = {
     lightGray: '#F5F5F5',
+    primary: '#199675',
+    subPrimary: '#E8F4F1',
     regularText: '#8F8F8F',
     red: "#FF0000",
     secondaryFont: '#9BA6B8',
