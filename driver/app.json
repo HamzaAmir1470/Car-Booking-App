@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "Ridewave-Driver",
+    "scheme": "ridewave-driver",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.becodemy.Ridewave-Driver",
+      "package": "com.becodemy.ridewaveDriver",
       "config": {
         "googleMaps": {
           "apiKey": ""
@@ -41,6 +41,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra" : {
+      "eas": {
+        "projectId": "128f5d58-8009-42e3-b490-2a541a99c281"
+      }
     }
   }
 }

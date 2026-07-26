@@ -83,7 +83,7 @@ export default function RidePlanScreen() {
         router.push({
           pathname: "/(routes)/ride-details",
           params: { orderData: JSON.stringify(orderData) },
-        });
+        } as any);
       });
 
     return () => {
@@ -121,7 +121,7 @@ export default function RidePlanScreen() {
   }, []);
 
   const initializeWebSocket = () => {
-    ws.current = new WebSocket("ws://192.168.1.2:8080");
+    ws.current = new WebSocket("ws://192.168.0.114:8080");
     ws.current.onopen = () => {
       console.log("Connected to websocket server");
       setWsConnected(true);
