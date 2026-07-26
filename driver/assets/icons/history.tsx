@@ -1,12 +1,15 @@
 import Svg, {Path} from 'react-native-svg';
 import React from 'react';
 
-export function History() {
+interface HistoryProps {
+  colors?: string;
+}
+export function History({ colors }: HistoryProps) {
   return (
     <Svg width="22" height="22" viewBox="0 0 22 22" fill="none">
       <Path
         d="M11.001 7.33435V11.001L13.2926 13.2927"
-        stroke="#8F8F8F"
+        stroke={colors || "#8F8F8F"}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"

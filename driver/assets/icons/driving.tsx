@@ -1,7 +1,7 @@
 import Svg, {Path} from 'react-native-svg';
 import React from 'react';
 
-export function Driving() {
+export function Driving({color} : any) {
   return (
     <Svg width="17" height="17" viewBox="0 0 17 17" fill="none">
       <Path
